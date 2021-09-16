@@ -7,10 +7,12 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "80:80"
+      - "31416:80"
     environment:
       TZ: 'Europe/Lisbon'
-      PIHOLE_DNS_: 1.1.1.1;1.0.0.1
+      PIHOLE_DNS_: 1.1.1.1;1.0.0.1;2606:4700:4700::1111;2606:4700:4700::1001
+      WEBUIBOXEDLAYOUT: traditional
+      VIRTUAL_HOST: pihole.internal.matiasilva.com
     volumes:
       - 'etc-pihole:/etc/pihole/'
       - 'etc-dnsmasq.d:/etc/dnsmasq.d/'
