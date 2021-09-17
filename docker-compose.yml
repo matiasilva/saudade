@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "31416:80"
+    environment:
+      TZ: 'Europe/Lisbon'
+      PIHOLE_DNS_: 1.1.1.1;1.0.0.1;2606:4700:4700::1111;2606:4700:4700::1001
+      WEBUIBOXEDLAYOUT: traditional
+      VIRTUAL_HOST: pihole.internal.matiasilva.com
+      QUERY_LOGGING: false
+    volumes:
+      - /home/pi/volumes/pihole/etc-pihole:/etc/pihole/
+      - /home/pi/volumes/pihole/etc-dnsmasq.d:/etc/dnsmasq.d/
+    restart: unless-stopped
+    networks:
+      - saudade_internal
+
+  influxdb:
+    container_name: influxdb
+    image: "influxdb:2.0.8"
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_HTTP_FLUX_ENABLED=false
+      - INFLUXDB_REPORTING_DISABLED=false
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+      - INFLUX_USERNAME=dba
+      - INFLUX_PASSWORD=supremo
+      - INFLUXDB_UDP_ENABLED=false
+      - INFLUXDB_UDP_BIND_ADDRESS=0.0.0.0:8086
+      - INFLUXDB_UDP_DATABASE=udp
+    volumes:
+      - /home/pi/volumes/influxdb/data:/var/lib/influxdb2
+      - /home/pi/backups/influxdb/db:/var/lib/influxdb/backup
+    networks:
+      - saudade_internal
+
+networks:
+  saudade_internal:
+    driver: bridge
