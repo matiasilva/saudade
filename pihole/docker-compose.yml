@@ -19,8 +19,9 @@ services:
       - /home/pi/volumes/pihole/etc-dnsmasq.d:/etc/dnsmasq.d/
     restart: unless-stopped
     networks:
-      - saudade_internal
+      - saudade_docker
 
 networks:
-  saudade_internal:
+  saudade_docker:
+    name: saudade_docker
     driver: bridge

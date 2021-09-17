@@ -20,4 +20,4 @@ services:
       - /home/pi/volumes/influxdb/data:/var/lib/influxdb2
       - /home/pi/backups/influxdb/db:/var/lib/influxdb/backup
     networks:
-      - saudade_internal
+      - saudade_docker
